@@ -235,7 +235,7 @@ WHEN MATCHED AND u.type = "update"
   THEN UPDATE SET *
 WHEN MATCHED AND u.type = "delete"
   THEN DELETE
-WHEN NOT MATCHED AND u.type = "insert"
+WHEN NOT MATCHED AND u.type = "insert" -- 'u.type IN ("insert", "update")' to insert record with insert or update label 
   THEN INSERT *
 
 -- COMMAND ----------
