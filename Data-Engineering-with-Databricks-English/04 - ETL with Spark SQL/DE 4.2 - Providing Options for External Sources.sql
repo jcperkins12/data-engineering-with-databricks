@@ -226,6 +226,11 @@ SELECT COUNT(*) FROM sales_csv
 
 -- COMMAND ----------
 
+-- MAGIC %python
+-- MAGIC display(DA.username)
+
+-- COMMAND ----------
+
 DROP TABLE IF EXISTS users_jdbc;
 
 CREATE TABLE users_jdbc
