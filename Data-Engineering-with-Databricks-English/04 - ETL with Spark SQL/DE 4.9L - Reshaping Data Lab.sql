@@ -84,12 +84,36 @@
 
 -- COMMAND ----------
 
+SELECT * FROM events LIMIT 3
+
+-- COMMAND ----------
+
+SELECT user_id as user, event_name, count(*) as cnt 
+FROM events
+WHERE event_name IS NOT NULL
+GROUP BY user_id, event_name
+
+
+-- COMMAND ----------
+
 -- TODO
-CREATE OR REPLACE VIEW events_pivot
-<FILL_IN>
-("cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
-"register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
-"cc_info", "foam", "reviews", "original", "delivery", "premium")
+CREATE OR REPLACE VIEW events_pivot AS
+--<FILL_IN>
+SELECT * FROM (
+  SELECT 
+    user_id as user, 
+    event_name 
+  FROM events
+  WHERE event_name IS NOT NULL
+) PIVOT ( 
+  count(*) for event_name in (
+    "cart", "pillows", "login", "main", "careers", "guest", "faq", "down", "warranty", "finalize", 
+    "register", "shipping_info", "checkout", "mattresses", "add_item", "press", "email_coupon", 
+    "cc_info", "foam", "reviews", "original", "delivery", "premium"
+  )
+);
+
+SELECT * FROM events_pivot LIMIT 5;
 
 -- COMMAND ----------
 
@@ -159,7 +183,14 @@ CREATE OR REPLACE VIEW events_pivot
 
 -- TODO
 CREATE OR REPLACE VIEW clickpaths AS
-<FILL_IN>
+SELECT * 
+FROM events_pivot a
+INNER JOIN transactions b 
+  ON a.user = b.user_id
+;--<FILL_IN>
+
+
+SELECT * FROM clickpaths LIMIT 3;
 
 -- COMMAND ----------
 
@@ -198,9 +229,15 @@ CREATE OR REPLACE VIEW clickpaths AS
 
 -- TODO
 CREATE OR REPLACE TABLE sales_product_flags AS
-<FILL_IN>
-EXISTS <FILL_IN>.item_name LIKE "%Mattress"
-EXISTS <FILL_IN>.item_name LIKE "%Pillow"
+SELECT 
+  items,
+  EXISTS (items, i -> i.item_name LIKE "%Mattress") as mattress,
+  EXISTS (items, i -> i.item_name LIKE "%Pillow") as pillow
+from sales
+;
+
+
+SELECT * from sales_product_flags Limit 3;
 
 -- COMMAND ----------
 

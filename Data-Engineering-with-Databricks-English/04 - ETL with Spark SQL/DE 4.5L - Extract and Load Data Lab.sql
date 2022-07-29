@@ -68,8 +68,16 @@
 
 -- COMMAND ----------
 
+-- debug cell to reset the table space
+--DROP TABLE events_json
+
+-- COMMAND ----------
+
 -- TODO
-<FILL_IN> ${da.paths.datasets}/raw/events-kafka/
+CREATE TABLE IF NOT EXISTS events_json 
+  (key BINARY,offset BIGINT, partition INTEGER,timestamp BIGINT,topic STRING,value BINARY)
+USING JSON
+OPTIONs (path = "${da.paths.datasets}/raw/events-kafka/")
 
 -- COMMAND ----------
 
@@ -90,6 +98,27 @@
 
 -- COMMAND ----------
 
+--%python
+--# debug cell
+--spark.table("events_json").dtypes
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC # explore reading the ddl schema from the table
+-- MAGIC from pyspark.sql.types import DataType
+-- MAGIC 
+-- MAGIC tbl = spark.table('events_json')
+-- MAGIC display(tbl.schema)
+-- MAGIC display(tbl.printSchema())
+
+-- COMMAND ----------
+
+-- MAGIC %scala
+-- MAGIC spark.table("events_json").schema.toDDL
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
@@ -100,7 +129,9 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+CREATE TABLE IF NOT EXISTS events_raw
+  (key BINARY,offset BIGINT,partition INT,timestamp BIGINT,topic STRING,value BINARY)
+
 
 -- COMMAND ----------
 
@@ -129,7 +160,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+INSERT INTO events_raw
+SELECT * FROM events_json;
 
 -- COMMAND ----------
 
@@ -141,7 +173,7 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+SELECT * FROM events_raw
 
 -- COMMAND ----------
 
@@ -170,7 +202,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/raw/item-lookup
+CREATE OR REPLACE TABLE item_lookup AS 
+SELECT * FROM parquet.`${da.paths.datasets}/raw/item-lookup`
 
 -- COMMAND ----------
 

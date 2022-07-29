@@ -68,8 +68,7 @@ SELECT * FROM foods
 
 -- COMMAND ----------
 
-CREATE OR REPLACE FUNCTION yelling(text STRING)
-RETURNS STRING
+CREATE OR REPLACE FUNCTION yelling(text STRING) RETURNS STRING
 RETURN concat(upper(text), "!!!")
 
 -- COMMAND ----------

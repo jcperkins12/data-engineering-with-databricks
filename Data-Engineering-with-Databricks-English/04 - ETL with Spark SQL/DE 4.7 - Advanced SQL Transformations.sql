@@ -103,6 +103,12 @@ SELECT * FROM parsed_events
 
 -- COMMAND ----------
 
+-- MAGIC %python
+-- MAGIC # added by cory to explore the schema structures created by spark
+-- MAGIC spark.table('parsed_events').printSchema()
+
+-- COMMAND ----------
+
 -- MAGIC %md
 -- MAGIC 
 -- MAGIC 
@@ -196,6 +202,18 @@ GROUP BY user_id
 -- MAGIC Spark SQL supports standard join operations (inner, outer, left, right, anti, cross, semi).
 -- MAGIC 
 -- MAGIC Here we chain a join with a lookup table to an **`explode`** operation to grab the standard printed item name.
+
+-- COMMAND ----------
+
+Describe sales
+
+-- COMMAND ----------
+
+SELECT * FROM sales limit 5
+
+-- COMMAND ----------
+
+SELECT * FROM item_lookup limit 5
 
 -- COMMAND ----------
 
