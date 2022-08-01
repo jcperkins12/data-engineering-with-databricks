@@ -259,6 +259,45 @@ display(files)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ## Custom exploring
+
+# COMMAND ----------
+
+data_source = f"{DA.paths.working_dir}/tracker"
+source_format = "json"
+table_name = "target_table"
+checkpoint_directory = f"{DA.paths.checkpoints}/target_table"
+
+# COMMAND ----------
+
+print(f"{table_name=}\n{data_source=}\n{checkpoint_directory=}")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT 
+# MAGIC   "${da.paths.checkpoints}/target_table" as checkpoint_directory,
+# MAGIC   "${da.paths.working_dir}/tracker" as data_source
+# MAGIC   
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC DESCRIBE extended target_table
+
+# COMMAND ----------
+
+dbutils.fs.ls()
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC -- read one of the raw tracker json files
+# MAGIC SELECT * FROM text.`dbfs:/user/cory.perkins@qorvo.com/dbacademy/dewd/6.1/tracker/01.json`
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC 
 # MAGIC 
 # MAGIC ## Clean Up
