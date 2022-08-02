@@ -189,7 +189,7 @@ print_job_config()
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 
